@@ -1,4 +1,8 @@
-This is my git training day 1 (actually, day 2)
+This is my git lesson day 1 (actually, day 2)
 I learn git. This is my second version of my file!
-This is my next change. 
-This is another change.
+
+Here I write something.
+
+This is my next change.
+And here another new note. 
+This is another change. And one more change.
