@@ -8,7 +8,6 @@ class Mylabel(tk.Label):
         self.config(text=text, padx=40)
         self.config(fg="#99FFFF", bd=0, highlightthickness=0, bg="#339999", pady=5, font=("Verdana", size))
         
-
 class Mybutton(tk.Button):
     def __init__(self, frame, text, padx, color, command):
         super().__init__(frame)
@@ -74,8 +73,7 @@ class Mytop(tk.Toplevel):
         Mybutton(self.frame, "Close window", 40, "grey", self.destroy).grid(row=10, column=0, columnspan=7, ipadx=129.5, pady=(20, 0))
 
 class Timer:
-    """This is my timer class"""
-
+    """This is timer class"""
     def __init__(self):
         self.hours = 00
         self.minutes = 00
@@ -229,20 +227,6 @@ Mybutton(mainwindow.frame,'Addition', 10, 'yellow', lambda: test('addition')).gr
 Mybutton(mainwindow.frame, 'Subtraction', 10, 'yellow', lambda: test('subtraction')).grid(row = 3, column = 1, padx=10, pady = 10, sticky = 'W'+'E')
 Mybutton(mainwindow.frame, 'Multiplication', 10, 'yellow', lambda: test('multiplication')).grid(row = 4, column = 0, padx=10, pady = 10, sticky = 'W'+'E')
 Mybutton(mainwindow.frame, 'Division', 10, 'yellow', lambda: test('division')).grid(row = 4, column = 1, padx=10, pady = 10, sticky = 'W'+'E')
-    
-# categories = ['Addition','Subtraction','Multiplication','Division']
-# commands=['addition','subtraction','multiplication','division']
-# commandscount = 0
-# count = 0
-# rowcount = 3
-# for category in range(4):
-#     print (commands[category])
-#     Mybutton(mainwindow.frame, categories[category], 10, 'yellow', lambda: test(commands[category])).grid(row = rowcount, column = count, padx=10, pady = 10, sticky = 'W'+'E')
-#     count +=1
-#     commandscount +=1
-#     if count == 2:
-#         count = 0
-#         rowcount += 1
 
 Mybutton(mainwindow.frame, "Close program", 40, "grey", mainwindow.destroy).grid(row=10, column=0, columnspan=2, ipadx=129.5, pady=(70, 0))
 
