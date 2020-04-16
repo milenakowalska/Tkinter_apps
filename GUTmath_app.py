@@ -44,7 +44,7 @@ class Myroot(tk.Tk):
         self.title("Elementary arithmetic test")
         self.config(background="#339999")
         self.geometry("1000x500")
-        self.image = ImageTk.PhotoImage(file= os.path.join(os.path.dirname(__file__), "brain.png"))
+        self.image = ImageTk.PhotoImage(file= (os.path.join(os.path.dirname(__file__), "brain.png")))
         self.canvas = tk.Canvas(self, bg="#339999", width=500, height=500, highlightthickness=0)
         self.canvas.create_image(250, 250, image=self.image)
         self.canvas.grid(row=0, column=0)
@@ -59,7 +59,7 @@ class Mytop(tk.Toplevel):
         self.config(background="#339999")
         self.geometry("1150x500")
 
-        self.image = ImageTk.PhotoImage(file= os.path.join(os.path.dirname(__file__), "brain.png"))
+        self.image = ImageTk.PhotoImage(file= (os.path.join(os.path.dirname(__file__), "brain.png")))
         self.canvas = tk.Canvas(self, bg="#339999", width=500, height=500, highlightthickness=0)
         self.canvas.create_image(250, 250, image=self.image)
         self.canvas.grid(row=0, column=0)
