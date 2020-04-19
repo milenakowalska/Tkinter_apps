@@ -1,7 +1,6 @@
 import tkinter as tk
 import os
-import webbrowser
-import sqlite3
+import webbrowser, sqlite3
 from PIL import Image, ImageTk
 
 class MyButton(tk.Button):
