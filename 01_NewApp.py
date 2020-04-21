@@ -77,7 +77,7 @@ class MyTop(tk.Toplevel):
 main_window = MyRoot()
 
 ## Create table
-os.chdir(os.path.dirname(__file__))
+# os.chdir(os.path.dirname(__file__))
 # connection = sqlite3.connect('01_NewApp.db')
 # cursor = connection.cursor()
 
