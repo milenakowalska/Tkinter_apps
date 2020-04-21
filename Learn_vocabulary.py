@@ -53,7 +53,7 @@ class Word():
 main_window = Myroot()
 
 # Create database:
-os.chdir(os.path.dirname(__file__))
+# os.chdir(os.path.dirname(__file__))
 # conn = sqlite3.connect("de2fr2.db")
 # c = conn.cursor()
 
@@ -85,7 +85,7 @@ def show():
     canvas3.pack(side=LEFT, fill=BOTH)
     yscrollbar.config(command=canvas3.yview)
 
-    connection = sqlite3.connect("de2fr2.db")
+    connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
     cursor = connection.cursor()
 
     cursor.execute("SELECT *, oid FROM words")
@@ -111,7 +111,7 @@ def show():
 
 def delete_word(delet_entry):
     
-    connection = sqlite3.connect("de2fr2.db")
+    connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
     cursor = connection.cursor()
     cursor.execute('DELETE from words WHERE oid= ' + delet_entry)      
     connection.commit()
@@ -119,16 +119,16 @@ def delete_word(delet_entry):
 
 def submit(german, french, definition):
 
-    conn = sqlite3.connect("de2fr2.db")
-    c = conn.cursor()
+    connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
+    c = connection.cursor()
     c.execute("INSERT INTO words VALUES(:german, :french, :definition)", 
         {
                 'german' : german.get(),
                 'french' : french.get(),
                 'definition' : definition.get()
         })
-    conn.commit()
-    conn.close()
+    connection.commit()
+    connection.close()
 
     german.delete(0,END)
     french.delete(0,END)
@@ -158,7 +158,7 @@ def start():
 
     ### Choose the random element from dictionary file
 
-    connection = sqlite3.connect("de2fr2.db")
+    connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
     cursor = connection.cursor()
     cursor.execute("SELECT *, oid FROM words")
     records = cursor.fetchall()
@@ -191,7 +191,7 @@ def start():
 
     def nextw(label_solution, word, newword):
         label_solution.grid_forget()
-        label_solution = Label(top_start.frame, text = ' ', bg = '#9999FF', padx=100)
+        label_solution = Label(top_start.frame, text = ' ', bg = '#9999FF', padx=120)
         label_solution.grid(row=5, pady = 10, ipadx=40) 
 
         entry_answer.delete(0,END)
