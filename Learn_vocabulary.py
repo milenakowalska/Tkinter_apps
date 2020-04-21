@@ -1,7 +1,7 @@
 from tkinter import *
 from PIL import ImageTk, Image
 import random
-import sqlite3
+import sqlite3, os
 from tkinter import filedialog
 from tkinter import ttk
 
@@ -43,21 +43,29 @@ class MyButton(Button):
         super().__init__(frame) # annotation is only for function 
         self.config(text = text, highlightbackground=highlightbackground, highlightthickness=6, command = command)
 
+class Word():
+    def __init__(self, word):
+        self.word = word
+        self.german = self.word[0]
+        self.french = self.word[1]
+        self.definition = self.word[2]
+
 main_window = Myroot()
 
-# # Database:
-conn = sqlite3.connect("de2fr2.db")
-c = conn.cursor()
-'''
-c.execute("""CREATE TABLE words (
+# Create database:
+os.chdir(os.path.dirname(__file__))
+# conn = sqlite3.connect("de2fr2.db")
+# c = conn.cursor()
 
-    german text, 
-    french text,
-    definition text
-    )""")
-'''
-conn.commit()
-conn.close()
+# c.execute("""CREATE TABLE words (
+
+#     german text, 
+#     french text,
+#     definition text
+#     )""")
+
+# conn.commit()
+# conn.close()
 
 def show():
     top_show = Mytoplevel()
@@ -157,9 +165,9 @@ def start():
     connection.commit()
     connection.close()
 
-    newo = random.choice(list(records))
+    newword = Word(random.choice(list(records)))
     ###
-    word = Label(top_start.frame, text = newo[0], font = ('Verdana', 40), bg = '#9999FF', fg = 'black' )
+    word = Label(top_start.frame, text = newword.german, font = ('Verdana', 40), bg = '#9999FF', fg = 'black' )
     word.grid(row = 1)
 
     Label(top_start.frame, text = 'Write the word in French', font = ('Verdana', 15), bg = '#9999FF' ).grid(row=2, pady = 10)
@@ -170,33 +178,36 @@ def start():
     label_solution = Label(top_start.frame, text = '', bg = '#9999FF')
     label_solution.grid(row=5, pady = 10) 
 
-    def check(newo, label_solution, entry_answer):
+    def check(newword, label_solution, entry_answer):
         label_solution.grid_forget()
         answer = str(entry_answer.get())
 
-        if str(newo[1]) == answer:
+        if str(newword.french) == answer:
             label_solution =  Label(top_start.frame, text = 'CORRECT!', font = ('Verdana', 15), bg = '#9999FF' , fg = '#006600')
         else:
-            label_solution = Label(top_start.frame, text = 'WRONG! The correct answer is: ' + newo[1], font = ('Verdana', 15), bg = '#9999FF' , fg = '#FF0033')
+            label_solution = Label(top_start.frame, text = 'WRONG! The correct answer is: ' + newword.french, font = ('Verdana', 15), bg = '#9999FF' , fg = '#FF0033')
 
         label_solution.grid(row=5, pady = 10)  
 
-    def nextw(label_solution, word, newo):
+    def nextw(label_solution, word, newword):
         label_solution.grid_forget()
-        label_solution = Label(top_start.frame, text = ' ', bg = '#9999FF')
-        label_solution.grid(row=5, pady = 10) 
+        label_solution = Label(top_start.frame, text = ' ', bg = '#9999FF', padx=100)
+        label_solution.grid(row=5, pady = 10, ipadx=40) 
 
         entry_answer.delete(0,END)
 
         word.grid_forget()
-        newo = random.choice(list(records))
+        setattr(newword, 'word', random.choice(list(records)))
+        setattr(newword, 'german', newword.word[0])
+        setattr(newword, 'french', newword.word[1])
+        setattr(newword, 'definition', newword.word[2])
 
-        word = Label(top_start.frame, text = newo[0], font = ('Verdana', 40), bg = '#9999FF', fg = 'black' )
+        word = Label(top_start.frame, text = newword.german, font = ('Verdana', 40), bg = '#9999FF', fg = 'black', padx=50 )
         word.grid(row = 1)
 
-    Button(top_start.frame, text = 'CHECK', highlightbackground = '#FFCC00', highlightthickness=6, command =lambda: check(newo, label_solution, entry_answer)).grid(row = 4, column = 0, ipadx = 88, pady = (40,0))
+    Button(top_start.frame, text = 'CHECK', highlightbackground = '#FFCC00', highlightthickness=6, command =lambda: check(newword, label_solution, entry_answer)).grid(row = 4, column = 0, ipadx = 88, pady = (40,0))
     Button(top_start.frame, text = 'Close window', highlightbackground = 'grey', highlightthickness=6, command = top_start.destroy).grid(row = 7, column = 0, ipadx = 68, pady = (10,0))
-    Button(top_start.frame, text = 'NEXT', highlightbackground = '#FFCC00', highlightthickness=6, command =lambda: nextw(label_solution,  word, newo)).grid(row = 6, column = 0, ipadx = 94, pady = (10,0))
+    Button(top_start.frame, text = 'NEXT', highlightbackground = '#FFCC00', highlightthickness=6, command =lambda: nextw(label_solution,  word, newword)).grid(row = 6, column = 0, ipadx = 94, pady = (10,0))
 
 MyButton(main_window.frame,'START', '#CCFF33', start).grid(row = 0, column = 0, ipadx = 116, pady = (40,10))
 MyButton(main_window.frame, 'Add new words', '#FF33CC', add).grid(row = 1, column = 0, ipadx = 88, pady = (10,20))
