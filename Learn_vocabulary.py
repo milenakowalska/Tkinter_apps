@@ -1,5 +1,5 @@
 from tkinter import *
-from PIL import ImageTk, Image
+from PIL import ImageTk
 import random
 import sqlite3, os
 from tkinter import filedialog
@@ -12,7 +12,7 @@ class Myroot(Tk):
         self.config(background = '#9999FF')
         self.geometry('600x550')
 
-        self.image= ImageTk.PhotoImage(file = "/Users/milenakowalska/Desktop/Python/Tkinter/multi1.png")
+        self.image= ImageTk.PhotoImage(file = os.path.join(os.path.dirname(__file__), "multi1.png"))
         self.canvas= Canvas(self, width = 600, height = 200, bg = '#9999FF', bd = 0, highlightthickness = 0)
         self.canvas.create_image(300,100, image=self.image)
         self.canvas.grid(row = 0)
@@ -30,7 +30,7 @@ class Mytoplevel(Toplevel):
         self.config(background = '#9999FF')
         self.geometry('600x550')
 
-        self.image2= ImageTk.PhotoImage(file = "/Users/milenakowalska/Desktop/Python/Tkinter/multi1.png")
+        self.image2= ImageTk.PhotoImage(file = os.path.join(os.path.dirname(__file__), "multi1.png"))
         self.canvas2= Canvas(self, width = 600, height = 200, bg = '#9999FF', bd = 0, highlightthickness = 0)
         self.canvas2.create_image(300,100, image=self.image2)
         self.canvas2.pack()
