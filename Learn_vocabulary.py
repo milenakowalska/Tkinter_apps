@@ -155,6 +155,7 @@ def add():
 
 def start(): 
     top_start = Mytoplevel()
+    top_start.geometry('1000x550')
 
     ### Choose the random element from dictionary file
 
@@ -179,7 +180,7 @@ def start():
     label_solution.grid(row=5, pady = 10) 
 
     def check(newword, label_solution, entry_answer):
-        label_solution.grid_forget()
+        Label(top_start.frame, text = ' ', bg = '#9999FF', padx=200).grid(row=5, pady = 10, ipadx=40)
         answer = str(entry_answer.get())
 
         if str(newword.french) == answer:
@@ -190,10 +191,7 @@ def start():
         label_solution.grid(row=5, pady = 10)  
 
     def nextw(label_solution, word, newword):
-        label_solution.grid_forget()
-        label_solution = Label(top_start.frame, text = ' ', bg = '#9999FF', padx=120)
-        label_solution.grid(row=5, pady = 10, ipadx=40) 
-
+        Label(top_start.frame, text = ' ', bg = '#9999FF', padx=200).grid(row=5, pady = 10, ipadx=40)
         entry_answer.delete(0,END)
 
         word.grid_forget()
@@ -201,7 +199,7 @@ def start():
         setattr(newword, 'german', newword.word[0])
         setattr(newword, 'french', newword.word[1])
         setattr(newword, 'definition', newword.word[2])
-
+        Label(top_start.frame, text = ' ',bg = '#9999FF', padx=400 , pady=15).grid(row=1)
         word = Label(top_start.frame, text = newword.german, font = ('Verdana', 40), bg = '#9999FF', fg = 'black', padx=50 )
         word.grid(row = 1)
 
