@@ -8,7 +8,7 @@ from tkinter import ttk
 class Myroot(Tk):
     def __init__(self):
         super().__init__()
-        self.title('Die geilste App von Mimimimilenka!')
+        self.title('Learn vocabulary!')
         self.config(background = '#9999FF')
         self.geometry('600x550')
 
@@ -26,7 +26,7 @@ class Myroot(Tk):
 class Mytoplevel(Toplevel):
     def __init__(self):
         super().__init__()
-        self.title('Die geilste App von Mimimimilenka!')
+        self.title('Learn vocabulary!')
         self.config(background = '#9999FF')
         self.geometry('600x550')
 
@@ -37,6 +37,9 @@ class Mytoplevel(Toplevel):
         
         self.frame= Frame(self, bg = '#9999FF', bd = 0, highlightthickness = 0, width = 550, height = 500 )
         self.frame.pack()
+
+        self.closeb = Button (self, text = 'CLOSE WINDOW', highlightbackground = 'grey', highlightthickness=6,command = self.destroy, padx=20)
+        self.closeb.pack(pady = 20)
 
 class MyButton(Button):
     def __init__(self, frame, text:str,highlightbackground, command):
@@ -50,164 +53,175 @@ class Word():
         self.french = self.word[1]
         self.definition = self.word[2]
 
-main_window = Myroot()
+def main(main_window):
 
-# Create database:
-# os.chdir(os.path.dirname(__file__))
-# conn = sqlite3.connect("de2fr2.db")
-# c = conn.cursor()
+    # Create database:
+    # os.chdir(os.path.dirname(__file__))
+    # conn = sqlite3.connect("de2fr2.db")
+    # c = conn.cursor()
 
-# c.execute("""CREATE TABLE words (
+    # c.execute("""CREATE TABLE words (
 
-#     german text, 
-#     french text,
-#     definition text
-#     )""")
+    #     german text, 
+    #     french text,
+    #     definition text
+    #     )""")
 
-# conn.commit()
-# conn.close()
+    # conn.commit()
+    # conn.close()
 
-def show():
-    top_show = Mytoplevel()
+    def show():
+        top_show = Mytoplevel()
+        top_show.geometry('600x640')
 
-    delet_entry = Entry(top_show.frame, width = 30, bg = '#9999FF')
-    delet_entry.pack()
+        delet_entry = Entry(top_show.frame, width = 30, bg = '#9999FF')
+        delet_entry.pack()
 
-    delet_label = Label(top_show.frame, text = 'Delete a word with ID number: ', bg = '#9999FF')
-    delet_label.pack()
+        delet_label = Label(top_show.frame, text = 'Delete a word with ID number: ', bg = '#9999FF')
+        delet_label.pack()
 
-    Button(top_show.frame, text = 'Delete a word', highlightbackground = 'black', highlightthickness=6, fg = 'black', command = lambda: delete_word(delet_entry.get())).pack() 
+        Button(top_show.frame, text = 'Delete a word', highlightbackground = 'black', highlightthickness=6, fg = 'black', command = lambda: delete_word(delet_entry.get())).pack() 
 
-    yscrollbar = Scrollbar(top_show.frame, orient="vertical")
-    yscrollbar.pack(side=RIGHT, fill=Y)
+        yscrollbar = Scrollbar(top_show.frame, orient="vertical")
+        yscrollbar.pack(side=RIGHT, fill=Y)
 
-    canvas3 = Canvas(top_show.frame, yscrollcommand=yscrollbar.set, bg = '#9999FF', bd = 0, highlightthickness = 0, height = 260, width = 550)
-    canvas3.pack(side=LEFT, fill=BOTH)
-    yscrollbar.config(command=canvas3.yview)
+        canvas3 = Canvas(top_show.frame, yscrollcommand=yscrollbar.set, bg = '#9999FF', bd = 0, highlightthickness = 0, height = 260, width = 550)
+        canvas3.pack(side=LEFT, fill=BOTH)
+        yscrollbar.config(command=canvas3.yview)
 
-    connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
-    cursor = connection.cursor()
+        connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
+        cursor = connection.cursor()
 
-    cursor.execute("SELECT *, oid FROM words")
-    records = cursor.fetchall()
+        cursor.execute("SELECT *, oid FROM words")
+        records = cursor.fetchall()
 
-    print_rec = str('')
-
-    ind = 0
-
-    inner_frame = Frame(canvas3, width=600, height=(len(records)*40), bg = '#9999FF', bd = 0, highlightthickness = 0)
-    canvas3.create_window((0,0), window=inner_frame, anchor='nw')
-
-    for items in records:
-        print_rec += str(items[3]) + '\t' + str(items[0]) + ' ---> ' + str(items[1]) +  '\n'
-        Label(inner_frame, text = print_rec, bg = '#9999FF').grid(row = ind+ 2, sticky = W)
-        ind += 1
         print_rec = str('')
 
-    canvas3.configure(scrollregion=canvas3.bbox("all"))
+        ind = 0
 
-    connection.commit()
-    connection.close()
+        inner_frame = Frame(canvas3, width=600, height=(len(records)*40), bg = '#9999FF', bd = 0, highlightthickness = 0)
+        canvas3.create_window((0,0), window=inner_frame, anchor='nw')
 
-def delete_word(delet_entry):
-    
-    connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
-    cursor = connection.cursor()
-    cursor.execute('DELETE from words WHERE oid= ' + delet_entry)      
-    connection.commit()
-    connection.close() 
+        for items in records:
+            print_rec += str(items[3]) + '\t' + str(items[0]) + ' ---> ' + str(items[1]) +  '\n'
+            Label(inner_frame, text = print_rec, bg = '#9999FF').grid(row = ind+ 2, sticky = W)
+            ind += 1
+            print_rec = str('')
 
-def submit(german, french, definition):
+        canvas3.configure(scrollregion=canvas3.bbox("all"))
 
-    connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
-    c = connection.cursor()
-    c.execute("INSERT INTO words VALUES(:german, :french, :definition)", 
-        {
-                'german' : german.get(),
-                'french' : french.get(),
-                'definition' : definition.get()
-        })
-    connection.commit()
-    connection.close()
+        connection.commit()
+        connection.close()
 
-    german.delete(0,END)
-    french.delete(0,END)
-    definition.delete(0,END)
+    def delete_word(delet_entry):
+        
+        connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
+        cursor = connection.cursor()
+        cursor.execute('DELETE from words WHERE oid= ' + delet_entry)      
+        connection.commit()
+        connection.close() 
 
-def add():
+    def submit(german, french, definition):
 
-    top_add = Mytoplevel()
+        connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
+        c = connection.cursor()
+        c.execute("INSERT INTO words VALUES(:german, :french, :definition)", 
+            {
+                    'german' : german.get(),
+                    'french' : french.get(),
+                    'definition' : definition.get()
+            })
+        connection.commit()
+        connection.close()
 
-    german = Entry(top_add.frame, width = 30, bg = '#9999FF')
-    german.grid(row = 0, column = 1)
-    french = Entry(top_add.frame, width = 30, bg = '#9999FF')
-    french.grid(row = 1, column = 1)
-    definition = Entry(top_add.frame, width = 30, bg = '#9999FF')
-    definition.grid(row = 2, column = 1)
+        german.delete(0,END)
+        french.delete(0,END)
+        definition.delete(0,END)
 
-    number = 0
-    for element in ('German','French','Definition'):
-        Label(top_add.frame, text = str(element), bg = '#9999FF').grid(row = number, column = 0)
-        number +=1
+    def add():
 
-    submit_button = Button(top_add.frame, text = 'Add a new word!', highlightbackground = '#FF6633',highlightthickness=6, command =lambda: submit(german, french, definition))
-    submit_button.grid(row = 4, column = 0, columnspan = 2, padx = 10, pady = 10, ipadx = 113)
+        top_add = Mytoplevel()
+        top_add.geometry('600x440')
 
-def start(): 
-    top_start = Mytoplevel()
-    top_start.geometry('1000x550')
+        german = Entry(top_add.frame, width = 30, bg = '#9999FF')
+        german.grid(row = 0, column = 1)
+        french = Entry(top_add.frame, width = 30, bg = '#9999FF')
+        french.grid(row = 1, column = 1)
+        definition = Entry(top_add.frame, width = 30, bg = '#9999FF')
+        definition.grid(row = 2, column = 1)
 
-    ### Choose the random element from dictionary file
+        number = 0
+        for element in ('German','French','Definition'):
+            Label(top_add.frame, text = str(element), bg = '#9999FF').grid(row = number, column = 0)
+            number +=1
 
-    connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
-    cursor = connection.cursor()
-    cursor.execute("SELECT *, oid FROM words")
-    records = cursor.fetchall()
-    connection.commit()
-    connection.close()
+        submit_button = Button(top_add.frame, text = 'Add a new word!', highlightbackground = '#FF6633',highlightthickness=6, command =lambda: submit(german, french, definition))
+        submit_button.grid(row = 4, column = 0, columnspan = 2, padx = 10, pady = 10, ipadx = 113)
 
-    newword = Word(random.choice(list(records)))
-    ###
-    word = Label(top_start.frame, text = newword.german, font = ('Verdana', 40), bg = '#9999FF', fg = 'black' )
-    word.grid(row = 1)
+    def start(): 
+        top_start = Mytoplevel()
+        top_start.geometry('1000x590')
 
-    Label(top_start.frame, text = 'Write the word in French', font = ('Verdana', 15), bg = '#9999FF' ).grid(row=2, pady = 10)
+        ### Choose the random element from dictionary file
 
-    entry_answer = Entry(top_start.frame, bg = '#9999FF')
-    entry_answer.grid(row = 3)
+        connection = sqlite3.connect(os.path.join(os.path.dirname(__file__), "de2fr2.db"))
+        cursor = connection.cursor()
+        cursor.execute("SELECT *, oid FROM words")
+        records = cursor.fetchall()
+        connection.commit()
+        connection.close()
 
-    label_solution = Label(top_start.frame, text = '', bg = '#9999FF')
-    label_solution.grid(row=5, pady = 10) 
-
-    def check(newword, label_solution, entry_answer):
-        Label(top_start.frame, text = ' ', bg = '#9999FF', padx=200).grid(row=5, pady = 10, ipadx=40)
-        answer = str(entry_answer.get())
-
-        if str(newword.french) == answer:
-            label_solution =  Label(top_start.frame, text = 'CORRECT!', font = ('Verdana', 15), bg = '#9999FF' , fg = '#006600')
-        else:
-            label_solution = Label(top_start.frame, text = 'WRONG! The correct answer is: ' + newword.french, font = ('Verdana', 15), bg = '#9999FF' , fg = '#FF0033')
-
-        label_solution.grid(row=5, pady = 10)  
-
-    def nextw(label_solution, word, newword):
-        Label(top_start.frame, text = ' ', bg = '#9999FF', padx=200).grid(row=5, pady = 10, ipadx=40)
-        entry_answer.delete(0,END)
-
-        word.grid_forget()
-        setattr(newword, 'word', random.choice(list(records)))
-        setattr(newword, 'german', newword.word[0])
-        setattr(newword, 'french', newword.word[1])
-        setattr(newword, 'definition', newword.word[2])
-        Label(top_start.frame, text = ' ',bg = '#9999FF', padx=400 , pady=15).grid(row=1)
-        word = Label(top_start.frame, text = newword.german, font = ('Verdana', 40), bg = '#9999FF', fg = 'black', padx=50 )
+        newword = Word(random.choice(list(records)))
+        ###
+        word = Label(top_start.frame, text = newword.german, font = ('Verdana', 40), bg = '#9999FF', fg = 'black' )
         word.grid(row = 1)
 
-    Button(top_start.frame, text = 'CHECK', highlightbackground = '#FFCC00', highlightthickness=6, command =lambda: check(newword, label_solution, entry_answer)).grid(row = 4, column = 0, ipadx = 88, pady = (40,0))
-    Button(top_start.frame, text = 'Close window', highlightbackground = 'grey', highlightthickness=6, command = top_start.destroy).grid(row = 7, column = 0, ipadx = 68, pady = (10,0))
-    Button(top_start.frame, text = 'NEXT', highlightbackground = '#FFCC00', highlightthickness=6, command =lambda: nextw(label_solution,  word, newword)).grid(row = 6, column = 0, ipadx = 94, pady = (10,0))
+        Label(top_start.frame, text = 'Write the word in French', font = ('Verdana', 15), bg = '#9999FF' ).grid(row=2, pady = 10)
 
-MyButton(main_window.frame,'START', '#CCFF33', start).grid(row = 0, column = 0, ipadx = 116, pady = (40,10))
-MyButton(main_window.frame, 'Add new words', '#FF33CC', add).grid(row = 1, column = 0, ipadx = 88, pady = (10,20))
-MyButton(main_window.frame, 'Show all words','#FFCC00',show).grid(row = 2, column = 0, ipadx = 88)
-main_window.mainloop()
+        entry_answer = Entry(top_start.frame, bg = '#9999FF')
+        entry_answer.grid(row = 3)
+
+        label_solution = Label(top_start.frame, text = '', bg = '#9999FF')
+        label_solution.grid(row=5, pady = 10) 
+
+        def check(newword, label_solution, entry_answer):
+            Label(top_start.frame, text = ' ', bg = '#9999FF', padx=200).grid(row=5, pady = 10, ipadx=40)
+            answer = str(entry_answer.get())
+
+            if str(newword.french) == answer:
+                label_solution =  Label(top_start.frame, text = 'CORRECT!', font = ('Verdana', 15), bg = '#9999FF' , fg = '#006600')
+            else:
+                label_solution = Label(top_start.frame, text = 'WRONG! The correct answer is: ' + newword.french, font = ('Verdana', 15), bg = '#9999FF' , fg = '#FF0033')
+
+            label_solution.grid(row=5, pady = 10)  
+
+        def nextw(label_solution, word, newword):
+            Label(top_start.frame, text = ' ', bg = '#9999FF', padx=200).grid(row=5, pady = 10, ipadx=40)
+            entry_answer.delete(0,END)
+
+            word.grid_forget()
+            setattr(newword, 'word', random.choice(list(records)))
+            setattr(newword, 'german', newword.word[0])
+            setattr(newword, 'french', newword.word[1])
+            setattr(newword, 'definition', newword.word[2])
+            Label(top_start.frame, text = ' ',bg = '#9999FF', padx=400 , pady=15).grid(row=1)
+            word = Label(top_start.frame, text = newword.german, font = ('Verdana', 40), bg = '#9999FF', fg = 'black', padx=50 )
+            word.grid(row = 1)
+
+        Button(top_start.frame, text = 'CHECK', highlightbackground = '#FFCC00', highlightthickness=6, command =lambda: check(newword, label_solution, entry_answer)).grid(row = 4, column = 0, ipadx = 88, pady = (40,0))
+        Button(top_start.frame, text = 'NEXT', highlightbackground = '#FFCC00', highlightthickness=6, command =lambda: nextw(label_solution,  word, newword)).grid(row = 6, column = 0, ipadx = 94, pady = (10,0))
+
+    MyButton(main_window.frame,'START', '#CCFF33', start).grid(row = 0, column = 0, ipadx = 116, pady = (40,10))
+    MyButton(main_window.frame, 'Add new words', '#FF33CC', add).grid(row = 1, column = 0, ipadx = 88, pady = (10,20))
+    MyButton(main_window.frame, 'Show all words','#FFCC00',show).grid(row = 2, column = 0, ipadx = 88)
+
+def main_import():
+    main_window = Mytoplevel()
+    main(main_window)
+    main_window.mainloop()
+
+if __name__ == '__main__':
+    main_window = Myroot()
+    main(main_window)
+    main_window.mainloop()
+    
