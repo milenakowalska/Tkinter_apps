@@ -40,11 +40,11 @@ $ python3 Tkinter_apps.py
 ```
 
 ## Usage
-Choose from the main window the application which you want to run. The following 2 apps are available: \
+Choose from the main window the application which you want to run. The following 2 apps are available:
 
-1. Math app - a simple programm for training elementary arithmetic. After choosing the category (addition, subtraction, multiplication or division) you should click the "start" button. You'll see 5 math operations - please put the result in the fields and click the "check button". \
+1. Math app - a simple programm for training elementary arithmetic. After choosing the category (addition, subtraction, multiplication or division) you should click the "start" button. You'll see 5 math operations - please put the result in the fields and click the "check button".
 
-2. Learn vocabulary - an application for German speakers who learn French. Click the "start" button to begin the learning session. You can also add new words to the database by clicking the "Add new words" button (required information: German word, French word and definition). All saved words are listed when you click the button "Show all words". \
+2. Learn vocabulary - an application for German speakers who learn French. Click the "start" button to begin the learning session. You can also add new words to the database by clicking the "Add new words" button (required information: German word, French word and definition). All saved words are listed when you click the button "Show all words".
 
 ## Owner
 Created by milenakowalska.
