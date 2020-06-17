@@ -1,0 +1,7 @@
+.DS_Store
+.mypy_cache/
+Learn_vocabulary/.DS_Store
+Learn_vocabulary/.mypy_cache/
+Learn_vocabulary/__pycache__/
+Math_app/.DS_Store
+Math_app/__pycache__/
