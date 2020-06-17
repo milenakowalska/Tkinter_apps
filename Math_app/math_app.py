@@ -207,25 +207,33 @@ def main(mainwindow):
                 setattr(each.entry_response, "value", each.entry_response.get())
 
                 if command == 'addition':
-                    if int(each.entry1.value) + int(each.entry2.value) == int(each.entry_response.value):
+                    if each.entry_response.value == '':
+                        Mylabel(test_top.frame, "NO ANSWER", 15).grid(row=each.row, column=5)
+                    elif int(each.entry1.value) + int(each.entry2.value) == int(each.entry_response.value):
                         Mylabel(test_top.frame, "RIGHT", 15).grid(row=each.row, column=5)
                     else:
                         Mylabel(test_top.frame, "WRONG", 15).grid(row=each.row, column=5)
 
                 if command == 'subtraction':
-                    if int(each.entry1.value) - int(each.entry2.value) == int(each.entry_response.value):
+                    if each.entry_response.value == '':
+                        Mylabel(test_top.frame, "NO ANSWER", 15).grid(row=each.row, column=5)
+                    elif int(each.entry1.value) - int(each.entry2.value) == int(each.entry_response.value):
                         Mylabel(test_top.frame, "RIGHT", 15).grid(row=each.row, column=5)
                     else:
                         Mylabel(test_top.frame, "WRONG", 15).grid(row=each.row, column=5)
             
                 if command == 'multiplication':
-                    if int(each.entry1.value) * int(each.entry2.value) == int(each.entry_response.value):
+                    if each.entry_response.value == '':
+                        Mylabel(test_top.frame, "NO ANSWER", 15).grid(row=each.row, column=5)
+                    elif int(each.entry1.value) * int(each.entry2.value) == int(each.entry_response.value):
                         Mylabel(test_top.frame, "RIGHT", 15).grid(row=each.row, column=5)
                     else:
                         Mylabel(test_top.frame, "WRONG", 15).grid(row=each.row, column=5)
             
                 if command == 'division':
-                    if int(each.entry1.value) / int(each.entry2.value) == int(each.entry_response.value):
+                    if each.entry_response.value == '':
+                        Mylabel(test_top.frame, "NO ANSWER", 15).grid(row=each.row, column=5)
+                    elif int(each.entry1.value) / int(each.entry2.value) == int(each.entry_response.value):
                         Mylabel(test_top.frame, "RIGHT", 15).grid(row=each.row, column=5)
                     else:
                         Mylabel(test_top.frame, "WRONG", 15).grid(row=each.row, column=5)
